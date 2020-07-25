@@ -15,6 +15,12 @@ class MoviesController < ApplicationController
      if params[:sort]
          sort_by = params[:sort]
          session[:sort] = sort_by
+         if sort_by == 'title'
+             @title = 'hilite'
+         end
+         if sort_by == 'release_date'
+             @release_date = 'hilite'
+         end
      elsif session[:sort]
          sort_by = session[:sort]
      end
@@ -22,8 +28,8 @@ class MoviesController < ApplicationController
       
       session[:ratings] = @selected_ratings
       
-      if params[:sort] != sort_by || params[:ratings] != @selected_ratings
-          redirect_to sort: sort_by, ratings: @selected_ratings
+      if params[:sort] != sort_by or params[:ratings] != @selected_ratings
+          redirect_to sort: sort_by, ratings: @selected_ratings and return
       end
       
       @movies = Movie.where(rating: @selected_ratings.keys).order(sort_by)
